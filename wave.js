@@ -1,6 +1,8 @@
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
-var radius = 50;
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+let radius = 50;
+
+let lines = [];
 
 class Line {
 	constructor(x, y, c_x, c_y) {
@@ -57,9 +59,7 @@ class Line {
 	}
 }
 
-var lines = [];
-
-function resize_canvas(){
+function resize(){
 	if (canvas.width < window.innerWidth) canvas.width = window.innerWidth;
 	if (canvas.height < window.innerHeight) canvas.height = window.innerHeight;
 
@@ -74,7 +74,14 @@ function resize_canvas(){
 	}
 }
 
-function drawloop() {
+function wave_init() {
+	canvas.addEventListener('mousedown', mousedown);
+	canvas.addEventListener('mouseup', mouseup);
+	canvas.addEventListener('mousemove', mousemove);
+	resize();
+}
+
+function wave() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	for (let y_lines of lines) {
@@ -83,10 +90,11 @@ function drawloop() {
 			line.draw();
 		}
 	}
-	window.requestAnimationFrame(drawloop);
 }
 
-var down = false;
+let old_cx = -1;
+let old_cy = -1;
+let down = false;
 function mousedown(e) {
 	down = true;
 
@@ -97,14 +105,15 @@ function mousedown(e) {
 		line.change();
 		//line.target_angle += Math.PI/2;
 	}
+
+	old_cx = c_x;
+	old_cy = c_y;
 }
 
 function mouseup() {
 	down = false;
 }
 
-let old_cx = -1;
-let old_cy = -1;
 function mousemove(e) {
 	if (!down) return;
 
@@ -122,15 +131,3 @@ function mousemove(e) {
 	old_cx = c_x;
 	old_cy = c_y;
 }
-
-function autorun() {
-	canvas.addEventListener('mousedown', mousedown);
-	canvas.addEventListener('mouseup', mouseup);
-	canvas.addEventListener('mousemove', mousemove);
-	resize_canvas();
-	drawloop();
-}
-
-if (document.addEventListener) document.addEventListener("DOMContentLoaded", autorun, false);
-else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
-else window.onload = autorun;
