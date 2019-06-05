@@ -80,6 +80,7 @@
     function init() {
 		resize();
 
+	    points = [];
 		for (let i = -rect_size; i <= rect_size; i += line_gap) {
 			points.push([])
 			for (let j = -rect_size; j <= rect_size; j += granularity) {
