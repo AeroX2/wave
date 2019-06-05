@@ -1,9 +1,7 @@
-let canvas;
-let ctx;
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
 
 $(() => {
-    canvas = document.getElementById("canvas");
-    ctx = canvas.getContext("2d");
 	canvas.addEventListener('mousedown', (e) => {
         let rect = canvas.getBoundingClientRect();
         let m = {
